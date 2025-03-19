@@ -5,7 +5,7 @@ mod config;
 mod controllers;
 mod db;
 mod docker;
-mod error_handlers;
+mod errors;
 mod models;
 mod repositories;
 mod services;
@@ -36,7 +36,10 @@ fn rocket() -> _ {
         .mount("/static", FileServer::from(relative!("static")))
         .register(
             "/",
-            catchers![error_handlers::not_found, error_handlers::server_error],
+            catchers![
+                errors::general::not_found_catcher,
+                errors::general::internal_server_error_catcher
+            ],
         )
         .attach(Template::fairing());
 

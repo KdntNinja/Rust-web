@@ -1,6 +1,6 @@
 pub mod database;
-pub mod validation;
 pub mod general;
+pub mod validation;
 
 use rocket::http::Status;
 use rocket::response::{self, Responder};
