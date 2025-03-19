@@ -1,0 +1,39 @@
+{{#*inline "page"}}
+<div class="flex flex-col items-center justify-center py-10">
+    <div class="text-center">
+        <h1 class="text-9xl font-bold text-indigo-600">404</h1>
+        <div class="animate-bounce mt-5">
+            <i class="fas fa-rocket text-5xl text-indigo-700 transform rotate-45"></i>
+        </div>
+        <h2 class="text-4xl font-bold text-gray-700 mt-8 dark:text-gray-300">Page Not Found</h2>
+        <p class="text-gray-600 mt-4 mb-8 dark:text-gray-400">The page you're looking for doesn't exist or has been moved.</p>
+        <div class="flex flex-col md:flex-row gap-4 justify-center">
+            <a href="/" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors duration-200 inline-flex items-center">
+                <i class="fas fa-home mr-2"></i> Go Home
+            </a>
+            <button onclick="window.history.back()" class="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium rounded-lg transition-colors duration-200 inline-flex items-center dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-200">
+                <i class="fas fa-arrow-left mr-2"></i> Go Back
+            </button>
+        </div>
+    </div>
+    
+    <div x-data="{ showTips: false }" class="mt-16 max-w-lg w-full">
+        <button @click="showTips = !showTips" class="w-full flex justify-between items-center px-4 py-2 bg-indigo-50 hover:bg-indigo-100 rounded-lg dark:bg-indigo-900 dark:hover:bg-indigo-800 transition-colors duration-200">
+            <span class="text-indigo-700 font-medium dark:text-indigo-300">
+                <i class="fas fa-lightbulb mr-2"></i> Did you know?
+            </span>
+            <i class="fas" :class="showTips ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+        </button>
+        <div x-show="showTips" x-transition class="bg-white p-4 rounded-lg shadow-md mt-2 text-gray-700 dark:bg-gray-800 dark:text-gray-300">
+            <p class="mb-2">Here are some quick tips:</p>
+            <ul class="list-disc pl-5 space-y-1">
+                <li>Check the URL for typos</li>
+                <li>Make sure you're using the correct route</li>
+                <li>Rocket routes are case-sensitive</li>
+                <li>Try navigating from the home page</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{{/inline}}
+{{~> base title="404 - Not Found"~}}
