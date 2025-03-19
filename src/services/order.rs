@@ -1,9 +1,6 @@
-use chrono::NaiveDate;
-use diesel::prelude::*;
-use diesel::sql_types::Text;
-
 use crate::models::order::{NewOrder, Order};
 use crate::repositories::order::OrderRepository;
+use diesel::prelude::*;
 
 pub struct OrderService;
 
