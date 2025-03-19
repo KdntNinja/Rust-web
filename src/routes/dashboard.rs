@@ -13,7 +13,7 @@ pub struct OrderForm {
 #[get("/dashboard")]
 pub fn dashboard() -> Template {
     Template::render(
-        "pages/dashboard",
+        "pages/dashboard/index",
         context! {
             title: "Dashboard",
         },
@@ -46,7 +46,7 @@ pub fn new_order(order_form: Form<OrderForm>, conn: DbConn) -> &'static str {
 #[get("/dashboard/orders")]
 pub fn view_orders() -> Template {
     Template::render(
-        "pages/orders",
+        "pages/dashboard/orders",
         context! {
             title: "Your Orders",
         },
