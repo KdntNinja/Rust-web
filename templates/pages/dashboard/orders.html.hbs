@@ -1,0 +1,60 @@
+{{#*inline "page"}}
+    <div class="py-6">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Your Orders</h1>
+        
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold">Order History</h2>
+                <a href="/dashboard/new-order" class="inline-flex items-center bg-indigo-600 text-white hover:bg-indigo-700 py-2 px-4 rounded-lg">
+                    <i class="fas fa-plus mr-2"></i> New Order
+                </a>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white">
+                    <thead>
+                        <tr>
+                            <th class="py-3 px-4 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">ID</th>
+                            <th class="py-3 px-4 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Website</th>
+                            <th class="py-3 px-4 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Details</th>
+                            <th class="py-3 px-4 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Deadline</th>
+                            <th class="py-3 px-4 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
+                            <th class="py-3 px-4 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-200">
+                            <td class="py-3 px-4 text-sm">1001</td>
+                            <td class="py-3 px-4 text-sm">SparxMaths</td>
+                            <td class="py-3 px-4 text-sm">Algebra problems set</td>
+                            <td class="py-3 px-4 text-sm">2023-10-30</td>
+                            <td class="py-3 px-4 text-sm"><span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">Completed</span></td>
+                            <td class="py-3 px-4 text-sm">
+                                <a href="#" class="text-blue-600 hover:text-blue-800 mr-2">View</a>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <td class="py-3 px-4 text-sm">1002</td>
+                            <td class="py-3 px-4 text-sm">Educake</td>
+                            <td class="py-3 px-4 text-sm">Science quiz</td>
+                            <td class="py-3 px-4 text-sm">2023-11-05</td>
+                            <td class="py-3 px-4 text-sm"><span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">In Progress</span></td>
+                            <td class="py-3 px-4 text-sm">
+                                <a href="#" class="text-blue-600 hover:text-blue-800 mr-2">View</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="mt-4 flex justify-between items-center">
+                <p class="text-sm text-gray-600">Showing 1-2 of 2 orders</p>
+                <div class="flex">
+                    <button class="bg-gray-200 text-gray-700 px-3 py-1 rounded-l-lg disabled:opacity-50" disabled>Previous</button>
+                    <button class="bg-gray-200 text-gray-700 px-3 py-1 rounded-r-lg disabled:opacity-50" disabled>Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{{/inline}}
+{{~> layouts/base title="Your Orders"~}}

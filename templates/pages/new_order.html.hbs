@@ -1,0 +1,25 @@
+{{#*inline "page"}}
+    <div class="py-6 text-center">
+        <h1 class="text-4xl font-bold mb-4">Submit a New Order</h1>
+        <form action="/dashboard/new-order" method="post" class="max-w-md mx-auto">
+            <div class="mb-4">
+                <label for="website" class="block text-left font-semibold">Website</label>
+                <select id="website" name="website" class="w-full border rounded-lg p-2">
+                    <option value="SparxMaths">SparxMaths</option>
+                    <option value="Educake">Educake</option>
+                    <option value="LanguageGym">LanguageGym</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="details" class="block text-left font-semibold">Assignment Details</label>
+                <textarea id="details" name="details" class="w-full border rounded-lg p-2" required></textarea>
+            </div>
+            <div class="mb-4">
+                <label for="deadline" class="block text-left font-semibold">Deadline</label>
+                <input type="date" id="deadline" name="deadline" class="w-full border rounded-lg p-2" required>
+            </div>
+            <button type="submit" class="bg-indigo-600 text-white py-2 px-4 rounded-lg">Submit Order</button>
+        </form>
+    </div>
+{{/inline}}
+{{~> layouts/base title="Submit New Order"~}}

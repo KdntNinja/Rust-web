@@ -11,3 +11,6 @@ port = 8000
 workers = 16
 keep_alive = 5
 log_level = "critical"
+
+[default.databases.postgres_db]
+url = "postgres://postgres:postgres@localhost/rust_web_db"
