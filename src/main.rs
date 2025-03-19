@@ -11,7 +11,14 @@ use rocket_dyn_templates::Template;
 #[launch]
 fn rocket() -> _ {
     rocket::build()
-        .mount("/", routes![routes::index::index, routes::hello::hello])
+        .mount(
+            "/",
+            routes![
+                routes::index::index,
+                routes::pricing::pricing,
+                routes::request::request_form
+            ],
+        )
         .mount("/static", FileServer::from(relative!("static")))
         .register(
             "/",
