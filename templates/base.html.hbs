@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+    <div class="flex flex-col min-h-screen">
+        <header class="bg-gradient-to-r from-blue-600 to-indigo-800 text-white shadow-lg">
+            <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+                <a class="flex title-font font-medium items-center text-white mb-4 md:mb-0">
+                    <i class="fas fa-rocket text-2xl"></i>
+                    <span class="ml-3 text-xl">Rust Web Application</span>
+                </a>
+                <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
+                    <a href="/" class="mr-5 hover:text-gray-200 transition-colors duration-200">Home</a>
+                    <a href="/hello/world" class="mr-5 hover:text-gray-200 transition-colors duration-200">Hello World</a>
+                </nav>
+                <button id="theme-toggle" class="inline-flex items-center bg-indigo-900 border-0 py-1 px-3 focus:outline-none hover:bg-indigo-700 rounded text-base mt-4 md:mt-0 transition-colors duration-200">
+                    <i class="fas fa-moon"></i>
+                    <span class="ml-1">Theme</span>
+                </button>
+            </div>
+        </header>
+        
+        <main class="container mx-auto flex-grow px-5 py-6">
+            {{> page}}
+        </main>
+        
+        <footer class="bg-indigo-900 text-white">
+            <div class="container mx-auto py-4 px-5">
+                <div class="flex flex-wrap justify-between items-center">
+                    <p class="text-sm text-center sm:text-left">
+                        <i class="fas fa-code"></i> Powered by Rocket
+                    </p>
+                    <div class="flex sm:mt-0 mt-2">
+                        <a href="https://github.com/SergioBenitez/Rocket" class="text-white ml-4 hover:text-gray-200">
+                            <i class="fab fa-github text-lg"></i>
+                        </a>
+                        <a href="https://rocket.rs/guide/" class="text-white ml-4 hover:text-gray-200">
+                            <i class="fas fa-book text-lg"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
