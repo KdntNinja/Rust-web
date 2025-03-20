@@ -3,7 +3,7 @@ use rocket_dyn_templates::{context, Template};
 #[get("/login")]
 pub fn login() -> Template {
     Template::render(
-        "pages/auth/login",
+        "auth/login",
         context! {
             title: "Login",
         },
@@ -18,9 +18,19 @@ pub fn logout() -> &'static str {
 #[get("/register")]
 pub fn register() -> Template {
     Template::render(
-        "pages/auth/register",
+        "auth/register",
         context! {
             title: "Register",
+        },
+    )
+}
+
+#[get("/signup")]
+pub fn signup() -> Template {
+    Template::render(
+        "auth/signup",
+        context! {
+            title: "Sign Up",
         },
     )
 }
@@ -28,7 +38,7 @@ pub fn register() -> Template {
 #[get("/profile")]
 pub fn profile() -> Template {
     Template::render(
-        "pages/profile",
+        "auth/profile",
         context! {
             title: "Your Profile",
         },
