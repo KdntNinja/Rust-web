@@ -1,7 +1,9 @@
-use crate::models::NewOrder;
-use crate::DbConn;
 use rocket::form::Form;
 use rocket_dyn_templates::{context, Template};
+
+use crate::models::order::NewOrder;
+use crate::services::order::OrderService;
+use crate::DbConn;
 
 #[derive(FromForm)]
 pub struct OrderForm {
@@ -13,7 +15,7 @@ pub struct OrderForm {
 #[get("/dashboard")]
 pub fn dashboard() -> Template {
     Template::render(
-        "pages/dashboard",
+        "pages/dashboard/index",
         context! {
             title: "Dashboard",
         },
@@ -29,8 +31,8 @@ pub fn new_order(order_form: Form<OrderForm>, conn: DbConn) -> &'static str {
         deadline: order_form.deadline.clone(),
     };
 
-    // Use async/await with rocket_sync_db_pools - prefix with underscore to avoid warning
-    let _result = conn.run(move |c| new_order.insert(c));
+    // Use the order service to handle the business logic
+    let _result = conn.run(move |c| OrderService::create_order(&new_order, c));
 
     // Uncomment this in production:
     /*
@@ -46,9 +48,19 @@ pub fn new_order(order_form: Form<OrderForm>, conn: DbConn) -> &'static str {
 #[get("/dashboard/orders")]
 pub fn view_orders() -> Template {
     Template::render(
-        "pages/orders",
+        "pages/dashboard/orders",
         context! {
             title: "Your Orders",
+        },
+    )
+}
+
+#[get("/dashboard/new-order")]
+pub fn new_order_form() -> Template {
+    Template::render(
+        "pages/dashboard/new_order",
+        context! {
+            title: "Submit New Order",
         },
     )
 }
