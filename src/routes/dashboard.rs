@@ -13,7 +13,7 @@ pub struct OrderForm {
 #[get("/dashboard")]
 pub fn dashboard() -> Template {
     Template::render(
-        "pages/dashboard",
+        "dashboard/index",
         context! {
             title: "Dashboard",
         },
@@ -32,13 +32,11 @@ pub fn new_order(order_form: Form<OrderForm>, conn: DbConn) -> &'static str {
     // Use async/await with rocket_sync_db_pools - prefix with underscore to avoid warning
     let _result = conn.run(move |c| new_order.insert(c));
 
-    // Uncomment this in production:
-    /*
     match result.await {
         Ok(_) => "Order submitted successfully!",
         Err(_) => "Error submitting order. Please try again.",
     }
-    */
+    
 
     "Order submitted successfully!"
 }
