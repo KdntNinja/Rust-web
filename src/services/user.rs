@@ -1,24 +1,66 @@
-use crate::models::user::{NewUser, User};
 use diesel::prelude::*;
+use diesel::sqlite::SqliteConnection;
 
-pub struct UserService;
+use crate::models::user::{NewUser, User};
+use crate::repositories::Repository;
+use crate::repositories::user::UserRepository;
+use crate::services::Service;
+
+/// Service for User-related business logic
+///
+/// This service encapsulates all business logic related to users,
+/// acting as an intermediary between controllers and repositories.
+pub struct UserService {
+    repository: UserRepository,
+}
 
 impl UserService {
-    pub fn find_user_by_email(email: &str, conn: &mut PgConnection) -> QueryResult<User> {
-        diesel::sql_query("SELECT id, name, email FROM users WHERE email = $1")
-            .bind::<diesel::sql_types::Text, _>(email)
-            .get_result(conn)
+    /// Create a new UserService instance
+    pub fn new() -> Self {
+        Self {
+            repository: UserRepository,
+        }
     }
+    
+    /// Find a user by their email
+    ///
+    /// # Arguments
+    /// * `email` - The email to search for
+    /// * `conn` - A database connection
+    pub fn find_user_by_email(&self, email: &str, conn: &mut SqliteConnection) -> QueryResult<User> {
+        self.repository.find_by_email(email, conn)
+    }
+}
 
-    pub fn create_user(new_user: &NewUser, conn: &mut PgConnection) -> QueryResult<User> {
-        diesel::sql_query(
-            "INSERT INTO users (name, email, password_hash) 
-             VALUES ($1, $2, $3) 
-             RETURNING id, name, email",
-        )
-        .bind::<diesel::sql_types::Text, _>(&new_user.name)
-        .bind::<diesel::sql_types::Text, _>(&new_user.email)
-        .bind::<diesel::sql_types::Text, _>(&new_user.password)
-        .get_result(conn)
+impl Service<User, i32, NewUser> for UserService {
+    fn get_by_id(&self, id: i32, conn: &mut SqliteConnection) -> QueryResult<User> {
+        self.repository.find_by_id(id, conn)
+    }
+    
+    fn create(&self, new_user: &NewUser, conn: &mut SqliteConnection) -> QueryResult<User> {
+        self.repository.insert(new_user, conn)
+    }
+    
+    fn get_all(&self, conn: &mut SqliteConnection) -> QueryResult<Vec<User>> {
+        self.repository.find_all(conn)
+    }
+}
+
+// Create a single static instance for convenience
+impl UserService {
+    /// Get a reference to the user service
+    ///
+    /// This is a convenience function to get a reference to a UserService
+    /// instance without having to create one.
+    pub fn instance() -> Self {
+        Self::new()
+    }
+    
+    /// A convenience function to create a user
+    ///
+    /// This static method lets you call UserService::create_user() without
+    /// explicitly creating a UserService instance.
+    pub fn create_user(new_user: &NewUser, conn: &mut SqliteConnection) -> QueryResult<User> {
+        Self::instance().create(new_user, conn)
     }
 }

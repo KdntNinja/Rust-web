@@ -1,26 +1,51 @@
 use diesel::prelude::*;
+use diesel::sqlite::SqliteConnection;
 use diesel::sql_types::Text;
 
 use crate::models::user::{NewUser, User};
+use crate::repositories::Repository;
 
+/// Repository for User entity operations
+///
+/// This struct provides database operations for the User entity,
+/// implementing the common Repository trait and additional user-specific methods.
 pub struct UserRepository;
 
-impl UserRepository {
-    pub fn find_by_email(email: &str, conn: &mut PgConnection) -> QueryResult<User> {
-        diesel::sql_query("SELECT id, name, email FROM users WHERE email = $1")
-            .bind::<Text, _>(email)
+impl Repository<User, i32, NewUser> for UserRepository {
+    /// Find a user by their ID
+    fn find_by_id(&self, id: i32, conn: &mut SqliteConnection) -> QueryResult<User> {
+        diesel::sql_query("SELECT id, username, email, password_hash, created_at FROM users WHERE id = ?")
+            .bind::<diesel::sql_types::Integer, _>(id)
             .get_result(conn)
     }
+    
+    /// Insert a new user into the database
+    fn insert(&self, new_user: &NewUser, conn: &mut SqliteConnection) -> QueryResult<User> {
+        diesel::sql_query("INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)")
+            .bind::<Text, _>(&new_user.username)
+            .bind::<Text, _>(&new_user.email)
+            .bind::<Text, _>(&new_user.password_hash)
+            .execute(conn)?;
+            
+        diesel::sql_query("SELECT id, username, email, password_hash, created_at FROM users WHERE email = ?")
+            .bind::<Text, _>(&new_user.email)
+            .get_result(conn)
+    }
+    
+    /// Find all users
+    fn find_all(&self, conn: &mut SqliteConnection) -> QueryResult<Vec<User>> {
+        diesel::sql_query("SELECT id, username, email, password_hash, created_at FROM users")
+            .load(conn)
+    }
+}
 
-    pub fn insert(new_user: &NewUser, conn: &mut PgConnection) -> QueryResult<User> {
-        diesel::sql_query(
-            "INSERT INTO users (name, email, password_hash) 
-             VALUES ($1, $2, $3) 
-             RETURNING id, name, email",
-        )
-        .bind::<Text, _>(&new_user.name)
-        .bind::<Text, _>(&new_user.email)
-        .bind::<Text, _>(&new_user.password) // This should be hashed!
-        .get_result(conn)
+impl UserRepository {
+    /// Find a user by their email
+    ///
+    /// This is a user-specific operation that extends the base Repository trait.
+    pub fn find_by_email(&self, email: &str, conn: &mut SqliteConnection) -> QueryResult<User> {
+        diesel::sql_query("SELECT id, username, email, password_hash, created_at FROM users WHERE email = ?")
+            .bind::<Text, _>(email)
+            .get_result(conn)
     }
 }

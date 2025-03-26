@@ -1,7 +1,0 @@
-CREATE TABLE orders (
-    id SERIAL PRIMARY KEY,
-    website VARCHAR NOT NULL,
-    details TEXT NOT NULL,
-    deadline DATE NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);

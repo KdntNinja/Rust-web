@@ -1,6 +1,5 @@
 use rocket::form::Form;
-use rocket::http::Cookie;
-use rocket::http::CookieJar;
+use rocket::http::{Cookie, CookieJar};
 use rocket::response::Redirect;
 use rocket_dyn_templates::{context, Template};
 
@@ -24,7 +23,7 @@ pub struct SignupForm {
 #[get("/login")]
 pub fn login() -> Template {
     Template::render(
-        "pages/auth/login",
+        "auth/login",
         context! {
             title: "Login",
         },
@@ -44,18 +43,16 @@ pub async fn process_login(
         .await;
 
     match result {
-        Ok(user) => {
-            // Set session cookie
-            let cookie = Cookie::build("user_id")
-                .path("/")
-                .build();
+        Some(user) => {
+            // Set session cookie with the user ID
+            let cookie = Cookie::new("user_id", user.id.to_string());
             cookies.add_private(cookie);
             Ok(Redirect::to("/dashboard"))
         }
-        Err(_) => {
+        None => {
             // Login failed
             Err(Template::render(
-                "pages/auth/login",
+                "auth/login",
                 context! {
                     title: "Login",
                     error: "Invalid email or password. Please try again.",
@@ -67,49 +64,43 @@ pub async fn process_login(
 
 #[get("/logout")]
 pub fn logout(cookies: &CookieJar<'_>) -> Redirect {
-    cookies.remove_private(Cookie::from("user_id"));
+    cookies.remove_private(Cookie::new("user_id", ""));
     Redirect::to("/")
 }
 
 #[get("/signup")]
-pub fn signup() -> Template {
+pub fn signup_page() -> Template {
     Template::render(
-        "pages/auth/signup",
+        "auth/register",
         context! {
             title: "Sign Up",
         },
     )
 }
 
-#[post("/signup", data = "<form>")]
-pub async fn process_signup(
-    form: Form<SignupForm>,
-    cookies: &CookieJar<'_>,
-    conn: DbConn,
-) -> Result<Redirect, Template> {
-    let signup_data = form.into_inner();
+#[post("/signup", data = "<signup_data>")]
+pub async fn process_signup(signup_data: Form<SignupForm>, cookies: &CookieJar<'_>, conn: DbConn) -> Result<Redirect, Template> {
+    let signup_data = signup_data.into_inner();
 
     let new_user = NewUser {
-        name: signup_data.name,
+        username: signup_data.name,
         email: signup_data.email,
-        password: signup_data.password,
+        password_hash: signup_data.password,
     };
 
     let result = conn.run(move |c| register_user(new_user, c)).await;
 
     match result {
         Ok(user) => {
-            // Set session cookie
-            let cookie = Cookie::build("user_id")
-                .path("/")
-                .build();
+            // Set session cookie with the user ID
+            let cookie = Cookie::new("user_id", user.id.to_string());
             cookies.add_private(cookie);
             Ok(Redirect::to("/dashboard"))
         }
         Err(_) => {
             // Registration failed
             Err(Template::render(
-                "pages/auth/signup",
+                "auth/register",
                 context! {
                     title: "Sign Up",
                     error: "Registration failed. Email may already be in use.",
@@ -122,7 +113,7 @@ pub async fn process_signup(
 #[get("/profile")]
 pub fn profile() -> Template {
     Template::render(
-        "pages/auth/profile",
+        "auth/profile",
         context! {
             title: "Your Profile",
         },

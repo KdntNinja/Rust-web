@@ -11,23 +11,23 @@ pub fn configure_routes(rocket: Rocket<Build>) -> Rocket<Build> {
             routes![
                 // Home routes
                 home::index,
+                home::about,
+                
                 // Auth routes
                 auth::login,
                 auth::process_login,
                 auth::logout,
-                auth::signup,
+                auth::signup_page,
                 auth::process_signup,
                 auth::profile,
-                // Dashboard routes with auth guards
+                
+                // Dashboard routes
                 dashboard::dashboard,
-                dashboard::dashboard_redirect,
-                dashboard::new_order_form,
-                dashboard::new_order_form_redirect,
-                dashboard::view_orders,
-                dashboard::view_orders_redirect,
-                dashboard::process_new_order,
-                // Service routes
+                
+                // Pricing routes
                 pricing::pricing,
+                
+                // Request routes
                 request::request_form,
             ],
         )

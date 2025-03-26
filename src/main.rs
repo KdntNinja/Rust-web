@@ -5,31 +5,45 @@ mod auth;
 mod config;
 mod controllers;
 mod db;
-mod docker;
 mod error_handlers;
 mod models;
 mod repositories;
 mod services;
 
 use config::routes::configure_routes;
+use diesel::sqlite::SqliteConnection;
+use diesel_migrations::{embed_migrations, EmbeddedMigrations, MigrationHarness};
 use rocket::fs::{relative, FileServer};
 use rocket_dyn_templates::Template;
 use rocket_sync_db_pools::database;
-use rocket_sync_db_pools::diesel;
+use std::error::Error;
 
-#[database("postgres_db")]
-pub struct DbConn(diesel::PgConnection);
+pub const MIGRATIONS: EmbeddedMigrations = embed_migrations!("migrations");
+
+#[database("sqlite_db")]
+pub struct DbConn(SqliteConnection);
+
+/// Run SQLite migrations to set up the database schema
+fn run_sqlite_migrations() -> Result<(), Box<dyn Error>> {
+    use diesel::connection::SimpleConnection;
+    
+    let mut conn = diesel::sqlite::SqliteConnection::establish("database.sqlite")?;
+    conn.batch_execute("PRAGMA foreign_keys = ON")?;
+    conn.run_pending_migrations(MIGRATIONS)?;
+    Ok(())
+}
 
 #[launch]
 fn rocket() -> _ {
-    // Ensure PostgreSQL is running in Docker
-    if let Err(e) = docker::ensure_postgres_running() {
-        eprintln!("Error: Could not ensure PostgreSQL is running: {}", e);
-    }
+    // Load environment variables from .env file
+    dotenv::dotenv().ok();
 
-    // Run migrations
-    if let Err(e) = docker::run_migrations() {
-        eprintln!("Error: Failed to run migrations: {}", e);
+    // Run SQLite migrations
+    if let Err(e) = run_sqlite_migrations() {
+        eprintln!("\n❌ SQLite Migration Error: {}\n", e);
+        eprintln!("The application will continue to run, but database functionality may be limited.");
+    } else {
+        println!("✅ SQLite Database migrations completed successfully!");
     }
 
     let rocket = rocket::build()

@@ -66,16 +66,48 @@ fn is_postgres_ready() -> bool {
 
 pub fn run_migrations() -> Result<(), String> {
     println!("🚀 Running database migrations...");
-    Command::new("diesel")
+
+    // First check if diesel CLI is installed
+    if let Err(_) = Command::new("diesel").arg("--version").output() {
+        return Err(format!(
+            "Diesel CLI not found. Please install it using:\n\
+             cargo install diesel_cli --no-default-features --features postgres\n\
+             Then restart the application."
+        ));
+    }
+
+    // Check if .env file exists
+    if !std::path::Path::new(".env").exists() {
+        println!("⚠️  No .env file found. Creating one with default DATABASE_URL...");
+        std::fs::write(
+            ".env",
+            "DATABASE_URL=postgres://postgres:postgres@localhost:5432/rust_web",
+        )
+        .map_err(|e| format!("Failed to create .env file: {}", e))?;
+    }
+
+    // Load .env file if it exists
+    dotenv::dotenv().ok();
+
+    let db_url = std::env::var("DATABASE_URL").unwrap_or_else(|_| {
+        // Default database URL if not set in environment
+        "postgres://postgres:postgres@localhost:5432/rust_web".to_string()
+    });
+
+    let mut command = Command::new("diesel");
+    command
         .args(["migration", "run"])
+        .env("DATABASE_URL", &db_url);
+
+    command
         .output()
-        .map_err(|e| format!("Failed to run migrations: {}", e))
+        .map_err(|e| format!("Failed to run migrations command: {}", e))
         .and_then(|o| {
             if o.status.success() {
                 Ok(())
             } else {
                 Err(format!(
-                    "Failed to run migrations: {}",
+                    "Migration command failed: {}",
                     String::from_utf8_lossy(&o.stderr)
                 ))
             }

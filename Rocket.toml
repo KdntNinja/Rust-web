@@ -12,5 +12,12 @@ workers = 16
 keep_alive = 5
 log_level = "critical"
 
-[default.databases.postgres_db]
-url = "postgres://postgres:postgres@localhost/rust_web_db"
+[default]
+secret_key = "hvYFn9IFUip3QUZTdDSCiOiLaQxgKARCQJnf1tQu97A="
+template_dir = "templates"
+
+[default.databases]
+sqlite_db = { url = "database.sqlite" }
+
+[global.databases]
+sqlite_db = { url = "db.sqlite" }
