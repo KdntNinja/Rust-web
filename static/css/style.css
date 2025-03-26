@@ -63,3 +63,43 @@ input:focus, select:focus, textarea:focus {
     border-color: #6366f1;
     box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
 }
+
+/* Dark mode styles */
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+header.dark-mode, footer.dark-mode {
+    background: #1e1e1e;
+    color: #e0e0e0;
+}
+
+nav a.dark-mode {
+    color: #e0e0e0;
+}
+
+main.dark-mode {
+    background: #1e1e1e;
+    color: #e0e0e0;
+}
+
+section.dark-mode {
+    background: #2c2c2c;
+    color: #e0e0e0;
+}
+
+/* Dark mode toggle button */
+.dark-mode-toggle {
+    cursor: pointer;
+    padding: 0.5rem;
+    background: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+.dark-mode-toggle:hover {
+    background: #444;
+}
