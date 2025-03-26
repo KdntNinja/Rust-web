@@ -34,6 +34,7 @@ fn rocket() -> _ {
     let rocket = rocket::build()
         .attach(DbConn::fairing())
         .mount("/static", FileServer::from(relative!("static")))
+        .mount("/pricing", routes![controllers::pricing::pricing])
         .register(
             "/",
             catchers![
