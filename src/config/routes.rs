@@ -14,9 +14,10 @@ pub fn configure_routes(rocket: Rocket<Build>) -> Rocket<Build> {
             auth::logout,
             auth::signup,
             auth::profile,
+            auth::register,
             // Dashboard routes
             dashboard::dashboard,
-            dashboard::new_order,
+            dashboard::new_order_form,
             dashboard::view_orders,
             // Service routes
             pricing::pricing,
