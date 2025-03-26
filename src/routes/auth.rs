@@ -28,7 +28,7 @@ pub fn register() -> Template {
 #[get("/profile")]
 pub fn profile() -> Template {
     Template::render(
-        "pages/auth/profile",
+        "pages/profile",
         context! {
             title: "Your Profile",
         },

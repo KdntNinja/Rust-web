@@ -13,7 +13,7 @@ pub struct OrderForm {
 #[get("/dashboard")]
 pub fn dashboard() -> Template {
     Template::render(
-        "pages/dashboard/index",
+        "dashboard/index",
         context! {
             title: "Dashboard",
         },
@@ -21,7 +21,7 @@ pub fn dashboard() -> Template {
 }
 
 #[post("/dashboard/new-order", data = "<order_form>")]
-pub async fn new_order(order_form: Form<OrderForm>, conn: DbConn) -> &'static str {
+pub fn new_order(order_form: Form<OrderForm>, conn: DbConn) -> &'static str {
     // Create a new order from the form data
     let new_order = NewOrder {
         website: order_form.website.clone(),
@@ -29,14 +29,14 @@ pub async fn new_order(order_form: Form<OrderForm>, conn: DbConn) -> &'static st
         deadline: order_form.deadline.clone(),
     };
 
-    // Fixed: use async/await with rocket_sync_db_pools
-    // Commented out for now since NewOrder.insert is not implemented
-    // let result = conn.run(move |c| new_order.insert(c)).await;
-    // 
-    // match result {
-    //     Ok(_) => "Order submitted successfully!",
-    //     Err(_) => "Error submitting order. Please try again.",
-    // }
+    // Use async/await with rocket_sync_db_pools - prefix with underscore to avoid warning
+    let _result = conn.run(move |c| new_order.insert(c));
+
+    match result.await {
+        Ok(_) => "Order submitted successfully!",
+        Err(_) => "Error submitting order. Please try again.",
+    }
+    
 
     "Order submitted successfully!"
 }
@@ -44,7 +44,7 @@ pub async fn new_order(order_form: Form<OrderForm>, conn: DbConn) -> &'static st
 #[get("/dashboard/orders")]
 pub fn view_orders() -> Template {
     Template::render(
-        "pages/dashboard/orders",
+        "pages/orders",
         context! {
             title: "Your Orders",
         },
