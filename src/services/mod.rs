@@ -11,10 +11,10 @@ use diesel::sqlite::SqliteConnection;
 pub trait Service<T, ID, NewT> {
     /// Get an entity by its ID
     fn get_by_id(&self, id: ID, conn: &mut SqliteConnection) -> QueryResult<T>;
-    
+
     /// Create a new entity
     fn create(&self, new_entity: &NewT, conn: &mut SqliteConnection) -> QueryResult<T>;
-    
+
     /// Get all entities
     fn get_all(&self, conn: &mut SqliteConnection) -> QueryResult<Vec<T>>;
 }

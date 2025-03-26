@@ -1,14 +1,42 @@
 {{#*inline "page"}}
     <style>
-        /* Login form specific styles */
+        /* Enhanced Login Form Styles */
         .form-input:focus {
             border-color: #6366f1;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.4);
+            transform: scale(1.05);
+            transition: all 0.2s ease-in-out;
+        }
+        .login-form {
+            transition: transform 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .error-message {
+            color: #e53e3e;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        .tooltip {
+            display: none;
+            position: absolute;
+            background: #6366f1;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.75rem;
+            transition: opacity 0.2s;
+        }
+        .tooltip.visible {
+            display: block;
+            opacity: 1;
         }
     </style>
 
     <div class="py-6 text-center">
-        <h1 class="text-4xl font-bold mb-4">Login</h1>
+        <h1 class="text-4xl font-bold mb-4 animate-bounce">Login</h1>
         
         {{#if error}}
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4 max-w-md mx-auto" role="alert">
@@ -16,16 +44,18 @@
         </div>
         {{/if}}
         
-        <form id="loginForm" action="/login" method="post" class="max-w-md mx-auto">
-            <div class="mb-4">
+        <form id="loginForm" action="/login" method="post" class="max-w-md mx-auto login-form relative">
+            <div class="mb-4 relative">
                 <label for="email" class="block text-left font-semibold">Email</label>
                 <input type="email" id="email" name="email" class="w-full border rounded-lg p-2 form-input" required>
+                <div id="emailTooltip" class="tooltip">Username here!</div>
             </div>
-            <div class="mb-4">
+            <div class="mb-4 relative">
                 <label for="password" class="block text-left font-semibold">Password</label>
                 <input type="password" id="password" name="password" class="w-full border rounded-lg p-2 form-input" required>
+                <div id="passwordTooltip" class="tooltip">Keep it a secret!</div>
             </div>
-            <button type="submit" class="bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors">Login</button>
+            <button type="submit" class="bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors shadow-lg">Login</button>
         </form>
         <div class="mt-4">
             <p class="text-gray-600">Don't have an account? <a href="/signup" class="text-indigo-600 hover:underline">Sign up</a></p>
@@ -35,15 +65,26 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const form = document.getElementById('loginForm');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            
+            const emailTooltip = document.getElementById('emailTooltip');
+            const passwordTooltip = document.getElementById('passwordTooltip');
             
             form.addEventListener('submit', (e) => {
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-                
-                if (!email || !password) {
+                if (!emailInput.value || !passwordInput.value) {
                     e.preventDefault();
                     alert('Please fill in all fields');
                 }
+            });
+            
+            // Tooltip interactions
+            [
+                { input: emailInput, tooltip: emailTooltip },
+                { input: passwordInput, tooltip: passwordTooltip }
+            ].forEach(({ input, tooltip }) => {
+                input.addEventListener('focus', () => tooltip.classList.add('visible'));
+                input.addEventListener('blur', () => tooltip.classList.remove('visible'));
             });
         });
     </script>

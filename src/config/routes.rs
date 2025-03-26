@@ -23,6 +23,12 @@ pub fn configure_routes(rocket: Rocket<Build>) -> Rocket<Build> {
                 
                 // Dashboard routes
                 dashboard::dashboard,
+                dashboard::dashboard_redirect,
+                dashboard::view_orders,
+                dashboard::view_orders_redirect,
+                dashboard::new_order_form,
+                dashboard::new_order_form_redirect,
+                dashboard::process_new_order,
                 
                 // Pricing routes
                 pricing::pricing,
@@ -33,6 +39,6 @@ pub fn configure_routes(rocket: Rocket<Build>) -> Rocket<Build> {
         )
         .register(
             "/",
-            catchers![error_handlers::not_found, error_handlers::server_error,],
+            catchers![error_handlers::not_found, error_handlers::server_error],
         )
 }

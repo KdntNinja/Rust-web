@@ -1,10 +1,11 @@
-use chrono::NaiveDateTime;
-use diesel::prelude::*;
-use diesel::sqlite::SqliteConnection;
+use chrono::{Local, NaiveDateTime};
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
+use std::sync::Mutex;
+use lazy_static::lazy_static;
 
 /// Represents a user in the system with full details
-#[derive(Queryable, Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct User {
     pub id: i32,
     pub username: String,
@@ -13,25 +14,54 @@ pub struct User {
     pub created_at: NaiveDateTime,
 }
 
-/// Represents a new user to be inserted into the database
-#[derive(Insertable)]
-#[table_name = "users"]
+/// Represents a new user to be inserted
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct NewUser {
     pub username: String,
     pub email: String,
     pub password_hash: String,
 }
 
-impl User {
-    /// Find a user by their email address
-    pub fn find_by_email(email_query: &str, conn: &mut SqliteConnection) -> QueryResult<User> {
-        use crate::schema::users::dsl::*;
-        users.filter(email.eq(email_query)).first(conn)
+// Mock user database for testing
+pub mod mock {
+    use super::*;
+    
+    lazy_static! {
+        static ref USERS: Mutex<HashMap<i32, User>> = {
+            let mut m = HashMap::new();
+            // Add a demo user
+            m.insert(1, User {
+                id: 1,
+                username: "demo".to_string(),
+                email: "demo@example.com".to_string(),
+                password_hash: "$2b$12$K2pklxM0RwiOEchkh2K.wOjlxAOQT/9f2VocbLkQwxJq/iQiv2xxu".to_string(), // "password"
+                created_at: Local::now().naive_local(),
+            });
+            Mutex::new(m)
+        };
     }
-
-    /// Find a user by their ID
-    pub fn find_by_id(user_id: i32, conn: &mut SqliteConnection) -> QueryResult<User> {
-        use crate::schema::users::dsl::*;
-        users.find(user_id).first(conn)
+    
+    pub fn find_by_email(email: &str) -> Option<User> {
+        USERS.lock().unwrap().values()
+            .find(|user| user.email == email)
+            .cloned()
+    }
+    
+    pub fn find_by_id(id: i32) -> Option<User> {
+        USERS.lock().unwrap().get(&id).cloned()
+    }
+    
+    pub fn insert(new_user: NewUser) -> User {
+        let mut users = USERS.lock().unwrap();
+        let id = users.len() as i32 + 1;
+        let user = User {
+            id,
+            username: new_user.username,
+            email: new_user.email,
+            password_hash: new_user.password_hash,
+            created_at: Local::now().naive_local(),
+        };
+        users.insert(id, user.clone());
+        user
     }
 }

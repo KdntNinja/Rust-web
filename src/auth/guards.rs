@@ -1,5 +1,4 @@
-use crate::models::user::User as DbUser;
-use crate::DbConn;
+use crate::models::user::mock;
 use rocket::http::Status;
 use rocket::request::{FromRequest, Outcome, Request};
 use rocket::serde::{Deserialize, Serialize};
@@ -11,10 +10,10 @@ pub struct User {
     pub email: String,
 }
 
+// Simplify to a single error type since we're not using the variants
 #[derive(Debug)]
 pub enum AuthError {
-    DatabaseError,
-    UserNotFound,
+    Unauthorized,
 }
 
 #[rocket::async_trait]
@@ -32,20 +31,14 @@ impl<'r> FromRequest<'r> for User {
             None => return Outcome::Forward(Status::Unauthorized),
         };
 
-        // Get database connection
-        let conn = request.guard::<DbConn>().await.succeeded();
-        if let Some(conn) = conn {
-            // Query the database to get user details
-            match conn.run(move |c| DbUser::find_by_id(user_id, c)).await {
-                Ok(db_user) => Outcome::Success(User {
-                    id: db_user.id,
-                    username: db_user.username,
-                    email: db_user.email,
-                }),
-                Err(_) => Outcome::Forward(Status::Unauthorized),
-            }
-        } else {
-            Outcome::Forward(Status::Unauthorized)
+        // Get user from mock database
+        match mock::find_by_id(user_id) {
+            Some(db_user) => Outcome::Success(User {
+                id: db_user.id,
+                username: db_user.username,
+                email: db_user.email,
+            }),
+            None => Outcome::Forward(Status::Unauthorized),
         }
     }
 }

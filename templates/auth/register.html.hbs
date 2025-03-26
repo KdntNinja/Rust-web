@@ -1,39 +1,63 @@
 {{#*inline "page"}}
     <style>
-        /* Signup form specific styles */
+        /* Enhanced Signup Form Styles */
         .form-input:focus {
             border-color: #6366f1;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.4);
+            transform: scale(1.05);
+            transition: all 0.2s ease-in-out;
         }
         .signup-form {
             transition: transform 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
         .error-message {
             color: #e53e3e;
             font-size: 0.875rem;
             margin-top: 0.25rem;
         }
+        .tooltip {
+            display: none;
+            position: absolute;
+            background: #6366f1;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.75rem;
+            transition: opacity 0.2s;
+        }
+        .tooltip.visible {
+            display: block;
+            opacity: 1;
+        }
     </style>
 
     <div class="py-6 text-center">
-        <h1 class="text-4xl font-bold mb-4">Sign Up</h1>
-        <form id="signupForm" action="/signup" method="post" class="max-w-md mx-auto signup-form">
-            <div class="mb-4">
+        <h1 class="text-4xl font-bold mb-4 animate-bounce">🚀 Sign Up</h1>
+        <p class="text-gray-600 mb-4">Join us for an amazing experience! 🌟</p>
+        <form id="signupForm" action="/signup" method="post" class="max-w-md mx-auto signup-form relative">
+            <div class="mb-4 relative">
                 <label for="name" class="block text-left font-semibold">Name</label>
                 <input type="text" id="name" name="name" class="w-full border rounded-lg p-2 form-input" required>
+                <div id="nameTooltip" class="tooltip">What's your name? 🦸</div>
                 <div id="nameError" class="error-message hidden"></div>
             </div>
-            <div class="mb-4">
+            <div class="mb-4 relative">
                 <label for="email" class="block text-left font-semibold">Email</label>
                 <input type="email" id="email" name="email" class="w-full border rounded-lg p-2 form-input" required>
+                <div id="emailTooltip" class="tooltip">We promise, no spam! 📩</div>
                 <div id="emailError" class="error-message hidden"></div>
             </div>
-            <div class="mb-4">
+            <div class="mb-4 relative">
                 <label for="password" class="block text-left font-semibold">Password</label>
                 <input type="password" id="password" name="password" class="w-full border rounded-lg p-2 form-input" required>
+                <div id="passwordTooltip" class="tooltip">Make it secure!</div>
                 <div id="passwordError" class="error-message hidden"></div>
             </div>
-            <button type="submit" class="bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors">Sign Up</button>
+            <button type="submit" class="bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors shadow-lg">Sign Up</button>
         </form>
         <div class="mt-4">
             <p class="text-gray-600">Already have an account? <a href="/login" class="text-indigo-600 hover:underline">Log in</a></p>
@@ -47,6 +71,10 @@
             const emailInput = document.getElementById('email');
             const passwordInput = document.getElementById('password');
             
+            const nameTooltip = document.getElementById('nameTooltip');
+            const emailTooltip = document.getElementById('emailTooltip');
+            const passwordTooltip = document.getElementById('passwordTooltip');
+            
             const nameError = document.getElementById('nameError');
             const emailError = document.getElementById('emailError');
             const passwordError = document.getElementById('passwordError');
@@ -55,12 +83,10 @@
                 let isValid = true;
                 
                 // Clear previous errors
-                nameError.textContent = '';
-                nameError.classList.add('hidden');
-                emailError.textContent = '';
-                emailError.classList.add('hidden');
-                passwordError.textContent = '';
-                passwordError.classList.add('hidden');
+                [nameError, emailError, passwordError].forEach(error => {
+                    error.textContent = '';
+                    error.classList.add('hidden');
+                });
                 
                 // Name validation
                 if (nameInput.value.trim().length < 2) {
@@ -92,17 +118,14 @@
                 }
             });
             
-            // Add styling for focused inputs
-            const inputs = form.querySelectorAll('input');
-            inputs.forEach(input => {
-                input.addEventListener('focus', () => {
-                    input.parentElement.classList.add('transform', 'scale-105');
-                    input.parentElement.style.transition = 'transform 0.2s ease';
-                });
-                
-                input.addEventListener('blur', () => {
-                    input.parentElement.classList.remove('transform', 'scale-105');
-                });
+            // Tooltip interactions
+            [
+                { input: nameInput, tooltip: nameTooltip },
+                { input: emailInput, tooltip: emailTooltip },
+                { input: passwordInput, tooltip: passwordTooltip }
+            ].forEach(({ input, tooltip }) => {
+                input.addEventListener('focus', () => tooltip.classList.add('visible'));
+                input.addEventListener('blur', () => tooltip.classList.remove('visible'));
             });
         });
     </script>

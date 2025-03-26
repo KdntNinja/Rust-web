@@ -1,6 +1,6 @@
 use diesel::prelude::*;
-use diesel::sqlite::SqliteConnection;
 use diesel::sql_types::{Integer, Text};
+use diesel::sqlite::SqliteConnection;
 
 use crate::models::order::{NewOrder, Order};
 use crate::repositories::Repository;
@@ -20,20 +20,20 @@ impl Repository<Order, i32, NewOrder> for OrderRepository {
         .bind::<Integer, _>(id)
         .get_result(conn)
     }
-    
+
     /// Insert a new order into the database
     fn insert(&self, new_order: &NewOrder, conn: &mut SqliteConnection) -> QueryResult<Order> {
         diesel::sql_query(
             "INSERT INTO orders (website, details, deadline) 
              VALUES (?, ?, ?) 
-             RETURNING id, website, details, deadline AS deadline_date, created_at"
+             RETURNING id, website, details, deadline AS deadline_date, created_at",
         )
         .bind::<Text, _>(&new_order.website)
         .bind::<Text, _>(&new_order.details)
         .bind::<Text, _>(&new_order.deadline)
         .get_result(conn)
     }
-    
+
     /// Find all orders
     fn find_all(&self, conn: &mut SqliteConnection) -> QueryResult<Vec<Order>> {
         diesel::sql_query(

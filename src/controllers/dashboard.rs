@@ -3,14 +3,16 @@ use rocket::response::Redirect;
 use rocket_dyn_templates::{context, Template};
 
 use crate::auth::guards::User;
-use crate::models::order::NewOrder;
-use crate::services::order::OrderService;
-use crate::DbConn;
+use crate::models::order::{NewOrder, mock as order_mock};
 
-#[derive(FromForm)]
+// Mark fields with #[allow(dead_code)] since they'll be used in form processing
+#[derive(FromForm, Debug)]
 pub struct OrderForm {
+    #[allow(dead_code)]
     website: String,
+    #[allow(dead_code)]
     details: String,
+    #[allow(dead_code)]
     deadline: String,
 }
 
@@ -32,11 +34,15 @@ pub fn dashboard_redirect() -> Redirect {
 
 #[get("/dashboard/orders", rank = 1)]
 pub fn view_orders(user: User) -> Template {
+    // Get orders from mock database
+    let orders = order_mock::find_all();
+    
     Template::render(
         "pages/dashboard/orders",
         context! {
             title: "Your Orders",
             user_name: user.username,
+            orders: orders
         },
     )
 }
@@ -63,18 +69,18 @@ pub fn new_order_form_redirect() -> Redirect {
 }
 
 #[post("/dashboard/new-order", data = "<form>")]
-pub async fn process_new_order(_user: User, form: Form<OrderForm>, conn: DbConn) -> Redirect {
-    let order_data = form.into_inner();
-
+pub fn process_new_order(_user: User, form: Form<OrderForm>) -> Redirect {
+    let form_data = form.into_inner();
+    println!("Processing new order: {:?}", form_data);
+    
+    // Create new order in mock database
     let new_order = NewOrder {
-        website: order_data.website,
-        details: order_data.details,
-        deadline: order_data.deadline,
+        website: form_data.website,
+        details: form_data.details,
+        deadline: form_data.deadline,
     };
-
-    let _ = conn
-        .run(move |c| OrderService::create_order(&new_order, c))
-        .await;
-
+    
+    order_mock::insert(new_order);
+    
     Redirect::to("/dashboard/orders")
 }

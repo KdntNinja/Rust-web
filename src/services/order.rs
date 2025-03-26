@@ -27,11 +27,11 @@ impl Service<Order, i32, NewOrder> for OrderService {
     fn get_by_id(&self, id: i32, conn: &mut SqliteConnection) -> QueryResult<Order> {
         self.repository.find_by_id(id, conn)
     }
-    
+
     fn create(&self, new_order: &NewOrder, conn: &mut SqliteConnection) -> QueryResult<Order> {
         self.repository.insert(new_order, conn)
     }
-    
+
     fn get_all(&self, conn: &mut SqliteConnection) -> QueryResult<Vec<Order>> {
         self.repository.find_all(conn)
     }
@@ -45,7 +45,7 @@ impl OrderService {
     pub fn instance() -> Self {
         Self::new()
     }
-    
+
     /// Convenience method to create an order
     ///
     /// This static method allows calling OrderService::create_order() without
@@ -53,12 +53,12 @@ impl OrderService {
     pub fn create_order(new_order: &NewOrder, conn: &mut SqliteConnection) -> QueryResult<Order> {
         Self::instance().create(new_order, conn)
     }
-    
+
     /// Convenience method to get all orders
     pub fn get_all_orders(conn: &mut SqliteConnection) -> QueryResult<Vec<Order>> {
         Self::instance().get_all(conn)
     }
-    
+
     /// Convenience method to get an order by ID
     pub fn get_order_by_id(id: i32, conn: &mut SqliteConnection) -> QueryResult<Order> {
         Self::instance().get_by_id(id, conn)

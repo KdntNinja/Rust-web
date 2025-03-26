@@ -11,10 +11,10 @@ use diesel::sqlite::SqliteConnection;
 pub trait Repository<T, ID, NewT> {
     /// Find an entity by its ID
     fn find_by_id(&self, id: ID, conn: &mut SqliteConnection) -> QueryResult<T>;
-    
+
     /// Insert a new entity into the database
     fn insert(&self, new_entity: &NewT, conn: &mut SqliteConnection) -> QueryResult<T>;
-    
+
     /// Find all entities of this type
     fn find_all(&self, conn: &mut SqliteConnection) -> QueryResult<Vec<T>>;
 }

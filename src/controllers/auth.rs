@@ -5,7 +5,6 @@ use rocket_dyn_templates::{context, Template};
 
 use crate::auth::{login_user, register_user};
 use crate::models::user::NewUser;
-use crate::DbConn;
 
 #[derive(FromForm)]
 pub struct LoginForm {
@@ -31,18 +30,13 @@ pub fn login() -> Template {
 }
 
 #[post("/login", data = "<form>")]
-pub async fn process_login(
+pub fn process_login(
     form: Form<LoginForm>,
     cookies: &CookieJar<'_>,
-    conn: DbConn,
 ) -> Result<Redirect, Template> {
     let login_data = form.into_inner();
 
-    let result = conn
-        .run(move |c| login_user(&login_data.email, &login_data.password, c))
-        .await;
-
-    match result {
+    match login_user(&login_data.email, &login_data.password) {
         Some(user) => {
             // Set session cookie with the user ID
             let cookie = Cookie::new("user_id", user.id.to_string());
@@ -79,7 +73,10 @@ pub fn signup_page() -> Template {
 }
 
 #[post("/signup", data = "<signup_data>")]
-pub async fn process_signup(signup_data: Form<SignupForm>, cookies: &CookieJar<'_>, conn: DbConn) -> Result<Redirect, Template> {
+pub fn process_signup(
+    signup_data: Form<SignupForm>,
+    cookies: &CookieJar<'_>,
+) -> Result<Redirect, Template> {
     let signup_data = signup_data.into_inner();
 
     let new_user = NewUser {
@@ -88,9 +85,7 @@ pub async fn process_signup(signup_data: Form<SignupForm>, cookies: &CookieJar<'
         password_hash: signup_data.password,
     };
 
-    let result = conn.run(move |c| register_user(new_user, c)).await;
-
-    match result {
+    match register_user(new_user) {
         Ok(user) => {
             // Set session cookie with the user ID
             let cookie = Cookie::new("user_id", user.id.to_string());
