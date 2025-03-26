@@ -1,0 +1,110 @@
+{{#*inline "page"}}
+    <style>
+        /* Signup form specific styles */
+        .form-input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+        .signup-form {
+            transition: transform 0.3s ease;
+        }
+        .error-message {
+            color: #e53e3e;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+    </style>
+
+    <div class="py-6 text-center">
+        <h1 class="text-4xl font-bold mb-4">Sign Up</h1>
+        <form id="signupForm" action="/signup" method="post" class="max-w-md mx-auto signup-form">
+            <div class="mb-4">
+                <label for="name" class="block text-left font-semibold">Name</label>
+                <input type="text" id="name" name="name" class="w-full border rounded-lg p-2 form-input" required>
+                <div id="nameError" class="error-message hidden"></div>
+            </div>
+            <div class="mb-4">
+                <label for="email" class="block text-left font-semibold">Email</label>
+                <input type="email" id="email" name="email" class="w-full border rounded-lg p-2 form-input" required>
+                <div id="emailError" class="error-message hidden"></div>
+            </div>
+            <div class="mb-4">
+                <label for="password" class="block text-left font-semibold">Password</label>
+                <input type="password" id="password" name="password" class="w-full border rounded-lg p-2 form-input" required>
+                <div id="passwordError" class="error-message hidden"></div>
+            </div>
+            <button type="submit" class="bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors">Sign Up</button>
+        </form>
+        <div class="mt-4">
+            <p class="text-gray-600">Already have an account? <a href="/login" class="text-indigo-600 hover:underline">Log in</a></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('signupForm');
+            const nameInput = document.getElementById('name');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            
+            const nameError = document.getElementById('nameError');
+            const emailError = document.getElementById('emailError');
+            const passwordError = document.getElementById('passwordError');
+            
+            form.addEventListener('submit', (e) => {
+                let isValid = true;
+                
+                // Clear previous errors
+                nameError.textContent = '';
+                nameError.classList.add('hidden');
+                emailError.textContent = '';
+                emailError.classList.add('hidden');
+                passwordError.textContent = '';
+                passwordError.classList.add('hidden');
+                
+                // Name validation
+                if (nameInput.value.trim().length < 2) {
+                    nameError.textContent = 'Name must be at least 2 characters';
+                    nameError.classList.remove('hidden');
+                    isValid = false;
+                }
+                
+                // Email validation
+                if (!emailInput.value.includes('@') || !emailInput.value.includes('.')) {
+                    emailError.textContent = 'Please enter a valid email address';
+                    emailError.classList.remove('hidden');
+                    isValid = false;
+                }
+                
+                // Password validation
+                if (passwordInput.value.length < 6) {
+                    passwordError.textContent = 'Password must be at least 6 characters';
+                    passwordError.classList.remove('hidden');
+                    isValid = false;
+                }
+                
+                if (!isValid) {
+                    e.preventDefault();
+                    form.classList.add('animate-shake');
+                    setTimeout(() => {
+                        form.classList.remove('animate-shake');
+                    }, 500);
+                }
+            });
+            
+            // Add styling for focused inputs
+            const inputs = form.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('focus', () => {
+                    input.parentElement.classList.add('transform', 'scale-105');
+                    input.parentElement.style.transition = 'transform 0.2s ease';
+                });
+                
+                input.addEventListener('blur', () => {
+                    input.parentElement.classList.remove('transform', 'scale-105');
+                });
+            });
+        });
+    </script>
+{{/inline}}
+{{~> layouts/base title="Sign Up"~}}

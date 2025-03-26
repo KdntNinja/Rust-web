@@ -1,11 +1,12 @@
 #[macro_use]
 extern crate rocket;
 
+mod auth;
 mod config;
 mod controllers;
 mod db;
 mod docker;
-mod errors;
+mod error_handlers;
 mod models;
 mod repositories;
 mod services;
@@ -33,16 +34,8 @@ fn rocket() -> _ {
 
     let rocket = rocket::build()
         .attach(DbConn::fairing())
-        .mount("/static", FileServer::from(relative!("static")))
-        .mount("/pricing", routes![controllers::pricing::pricing])
-        .register(
-            "/",
-            catchers![
-                errors::general::not_found_catcher,
-                errors::general::internal_server_error_catcher
-            ],
-        )
-        .attach(Template::fairing());
+        .attach(Template::fairing())
+        .mount("/static", FileServer::from(relative!("static")));
 
     configure_routes(rocket)
 }

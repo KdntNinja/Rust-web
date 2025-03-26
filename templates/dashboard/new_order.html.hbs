@@ -1,0 +1,48 @@
+{{#*inline "page"}}
+    <div class="py-6">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-3xl font-bold text-gray-800 mb-6">Submit a New Order</h1>
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <form action="/dashboard/new-order" method="post">
+                    <div class="mb-6">
+                        <label for="website" class="block text-gray-700 text-sm font-bold mb-2">Select Website</label>
+                        <select id="website" name="website" class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            <option value="SparxMaths">SparxMaths</option>
+                            <option value="Educake">Educake</option>
+                            <option value="LanguageGym">LanguageGym</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label for="details" class="block text-gray-700 text-sm font-bold mb-2">Assignment Details</label>
+                        <textarea id="details" name="details" rows="6" class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Please provide detailed information about your assignment..."></textarea>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label for="deadline" class="block text-gray-700 text-sm font-bold mb-2">Deadline</label>
+                        <input type="date" id="deadline" name="deadline" class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label for="login" class="block text-gray-700 text-sm font-bold mb-2">Login Details (Optional)</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <input type="text" id="username" name="username" class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Username">
+                            <input type="password" id="password" name="password" class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Password">
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Your login details are encrypted and only used to complete your assignment.</p>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                            Submit Order
+                        </button>
+                        <a href="/dashboard" class="inline-block align-baseline font-bold text-sm text-indigo-600 hover:text-indigo-800">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{{/inline}}
+{{~> layouts/base title="Submit New Order"~}}
