@@ -48,10 +48,6 @@ pub mod mock {
         result
     }
     
-    pub fn find_by_id(id: i32) -> Option<Order> {
-        ORDERS.lock().unwrap().get(&id).cloned()
-    }
-    
     pub fn insert(new_order: NewOrder) -> Order {
         let mut orders = ORDERS.lock().unwrap();
         let id = orders.len() as i32 + 1;

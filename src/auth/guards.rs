@@ -12,9 +12,7 @@ pub struct User {
 
 // Simplify to a single error type since we're not using the variants
 #[derive(Debug)]
-pub enum AuthError {
-    Unauthorized,
-}
+pub enum AuthError {}
 
 #[rocket::async_trait]
 impl<'r> FromRequest<'r> for User {
