@@ -24,7 +24,7 @@
             </span>
             <i class="fas" :class="showTips ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
         </button>
-        <div x-show="showTips" x-transition class="bg-white p-4 rounded-lg shadow-md mt-2 text-gray-700">
+        <div x-show="showTips" x-transition.duration.300ms class="bg-white p-4 rounded-lg shadow-md mt-2 text-gray-700">
             <p class="mb-2">Here are some quick tips:</p>
             <ul class="list-disc pl-5 space-y-1">
                 <li>Check the URL for typos</li>
@@ -35,5 +35,12 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Ensure Alpine.js is properly initialized for this page
+    document.addEventListener('alpine:init', () => {
+        // Any additional Alpine.js components can be defined here
+    });
+</script>
 {{/inline}}
 {{~> layouts/base title="404 - Not Found"~}}

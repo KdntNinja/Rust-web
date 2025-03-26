@@ -1,17 +1,44 @@
 {{#*inline "page"}}
+    <style>
+        /* Login form specific styles */
+        .form-input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+    </style>
+
     <div class="py-6 text-center">
         <h1 class="text-4xl font-bold mb-4">Login</h1>
-        <form action="/login" method="post" class="max-w-md mx-auto">
+        <form id="loginForm" action="/login" method="post" class="max-w-md mx-auto">
             <div class="mb-4">
                 <label for="email" class="block text-left font-semibold">Email</label>
-                <input type="email" id="email" name="email" class="w-full border rounded-lg p-2" required>
+                <input type="email" id="email" name="email" class="w-full border rounded-lg p-2 form-input" required>
             </div>
             <div class="mb-4">
                 <label for="password" class="block text-left font-semibold">Password</label>
-                <input type="password" id="password" name="password" class="w-full border rounded-lg p-2" required>
+                <input type="password" id="password" name="password" class="w-full border rounded-lg p-2 form-input" required>
             </div>
-            <button type="submit" class="bg-indigo-600 text-white py-2 px-4 rounded-lg">Login</button>
+            <button type="submit" class="bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors">Login</button>
         </form>
+        <div class="mt-4">
+            <p class="text-gray-600">Don't have an account? <a href="/signup" class="text-indigo-600 hover:underline">Sign up</a></p>
+        </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('loginForm');
+            
+            form.addEventListener('submit', (e) => {
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                
+                if (!email || !password) {
+                    e.preventDefault();
+                    alert('Please fill in all fields');
+                }
+            });
+        });
+    </script>
 {{/inline}}
 {{~> layouts/base title="Login"~}}

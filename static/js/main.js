@@ -10,4 +10,10 @@ document.addEventListener('DOMContentLoaded', () => {
             mainContent.style.transition = 'opacity 0.5s ease-out';
         }, 100);
     }
+
+    // Initialize any Alpine.js components if needed
+    if (window.Alpine) {
+        // Alpine is ready
+        console.log('Alpine.js initialized');
+    }
 });

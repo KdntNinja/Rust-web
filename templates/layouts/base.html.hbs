@@ -5,26 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{title}} | HomeworkHelpers</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="/static/css/style.css">
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Base styles only - page-specific styles are in each template */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+    </style>
 </head>
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
     <div class="flex flex-col min-h-screen">
         <header class="bg-gradient-to-r from-blue-600 to-indigo-800 text-white shadow-lg">
             <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
                 <a href="/" class="flex title-font font-medium items-center text-white mb-4 md:mb-0">
-                    <i class="fas fa-graduation-cap text-2xl"></i>
+                    <i class="fas fa-robot text-2xl"></i>
                     <span class="ml-3 text-xl">HomeworkHelpers</span>
                 </a>
                 <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
                     <a href="/" class="mr-5 hover:text-gray-200 transition-colors duration-200">Home</a>
-                    <a href="/pricing" class="mr-5 hover:text-gray-200 transition-colors duration-200">Services & Pricing</a>
-                    <a href="/request" class="mr-5 hover:text-gray-200 transition-colors duration-200">Request Help</a>
+                    <a href="/pricing" class="mr-5 hover:text-gray-200 transition-colors duration-200">Subscription Plans</a>
+                    <a href="/dashboard" class="mr-5 hover:text-gray-200 transition-colors duration-200">My Dashboard</a>
                 </nav>
                 <a href="/signup" class="inline-flex items-center bg-white text-indigo-800 border-0 py-1 px-3 focus:outline-none hover:bg-gray-100 rounded text-base mt-4 md:mt-0 transition-colors duration-200">
-                    <i class="fas fa-paper-plane mr-1"></i>
-                    <span>Get Started</span>
+                    <i class="fas fa-rocket mr-1"></i>
+                    <span>Subscribe Now</span>
                 </a>
             </div>
         </header>
@@ -34,12 +43,14 @@
         </main>
         
         <footer class="bg-indigo-800 text-white">
+            <div class="container mx-auto px-5 py-6">
                 <div class="mt-8 pt-6 text-center text-sm">
                     <p>&copy; 2025 HomeworkHelpers. All rights reserved.</p>
                 </div>
             </div>
         </footer>
     </div>
+    <!-- Instead of duplicate JS, use static file for common functionality -->
     <script src="/static/js/main.js"></script>
 </body>
 </html>

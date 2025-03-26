@@ -1,41 +1,58 @@
 {{#*inline "page"}}
+    <style>
+        /* Pricing specific styles */
+        .pricing-card {
+            transition: all 0.3s ease;
+        }
+        .pricing-card:hover:not(.featured) {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .featured {
+            position: relative;
+            z-index: 10;
+        }
+        .pricing-feature {
+            transition: background-color 0.2s ease;
+        }
+        .pricing-feature:hover {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+    </style>
+
     <div class="py-6">
-        <h1 class="text-3xl font-bold text-center text-gray-800 mb-10">Affordable Homework Completion Plans</h1>
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-4">Automatic Homework Completion Subscriptions</h1>
+        <p class="text-center text-gray-600 mb-10 max-w-3xl mx-auto">Subscribe once and never worry about homework again. Our AI-powered system automatically completes all assignments on your connected platforms.</p>
         
         <div class="max-w-7xl mx-auto">
             <!-- Pricing Tiers -->
             <div class="grid md:grid-cols-3 gap-8 mb-16">
+                
                 <!-- Basic Plan -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition-transform duration-300 hover:-translate-y-2">
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition-transform duration-300 hover:-translate-y-2 pricing-card">
                     <div class="p-8">
                         <h2 class="text-2xl font-bold text-gray-800 mb-4">Basic</h2>
                         <div class="text-indigo-600 text-4xl font-bold mb-6">£2 <span class="text-gray-500 text-xl font-normal">/month</span></div>
                         <ul class="space-y-3 mb-8">
                             <li class="flex items-center">
                                 <i class="fas fa-check text-green-500 mr-2"></i>
-                                <span class="text-gray-700">Educake</span>
+                                <span class="text-gray-700">Automatic Educake completion</span>
                             </li>
-
-                            <!-- Not included in Basic Plan -->
                             <li class="flex items-center">
-                                <i class="fas fa-times text-red-500 mr-2"></i>
-                                <span class="text-gray-700">SparxMaths</span>
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                <span class="text-gray-700">Up to 10 assignments/month</span>
                             </li>
                             <li class="flex items-center">
                                 <i class="fas fa-times text-red-500 mr-2"></i>
-                                <span class="text-gray-700">LanguageGym</span>
+                                <span class="text-gray-700">SparxMaths & LanguageGym</span>
                             </li>
                         </ul>
-                    </div>
-                    <div class="px-8 pb-8">
-                        <a href="/dashboard/new-order" class="block w-full bg-indigo-600 hover:bg-indigo-700 text-white text-center py-3 px-4 rounded-lg font-semibold transition-colors duration-200">
-                            Get Started
-                        </a>
+                        <a href="/signup" class="block text-center bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-lg w-full transition-colors">Subscribe Now</a>
                     </div>
                 </div>
                 
                 <!-- Premium Plan -->
-                <div class="bg-white rounded-xl shadow-2xl overflow-hidden transform transition-transform duration-300 hover:-translate-y-2 relative z-10 scale-105">
+                <div class="bg-white rounded-xl shadow-2xl overflow-hidden transform transition-transform duration-300 hover:-translate-y-2 relative z-10 scale-105 pricing-card featured">
                     <div class="absolute top-0 left-0 right-0 bg-indigo-600 text-white text-center py-1 text-sm font-semibold">
                         MOST POPULAR
                     </div>
@@ -45,56 +62,107 @@
                         <ul class="space-y-3 mb-8">
                             <li class="flex items-center">
                                 <i class="fas fa-check text-green-500 mr-2"></i>
-                                <span class="text-gray-700">Educake</span>
+                                <span class="text-gray-700">Automatic Educake completion</span>
                             </li>
                             <li class="flex items-center">
                                 <i class="fas fa-check text-green-500 mr-2"></i>
-                                <span class="text-gray-700">SparxMaths</span>
+                                <span class="text-gray-700">Automatic SparxMaths completion</span>
                             </li>
-
-                            <!-- Not included in Plan -->
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                <span class="text-gray-700">Unlimited assignments</span>
+                            </li>
                             <li class="flex items-center">
                                 <i class="fas fa-times text-red-500 mr-2"></i>
-                                <span class="text-gray-700">LanguageGym</span>
+                                <span class="text-gray-700">LanguageGym support</span>
                             </li>
                         </ul>
-                    </div>
-                    <div class="px-8 pb-8">
-                        <a href="/dashboard/new-order" class="block w-full bg-indigo-600 hover:bg-indigo-700 text-white text-center py-3 px-4 rounded-lg font-semibold transition-colors duration-200">
-                            Get Started
-                        </a>
+                        <a href="/signup" class="block text-center bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-lg w-full transition-colors">Subscribe Now</a>
                     </div>
                 </div>
                 
                 <!-- Pro Plan -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition-transform duration-300 hover:-translate-y-2">
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition-transform duration-300 hover:-translate-y-2 pricing-card">
                     <div class="p-8">
                         <h2 class="text-2xl font-bold text-gray-800 mb-4">Pro</h2>
                         <div class="text-indigo-600 text-4xl font-bold mb-6">£7 <span class="text-gray-500 text-xl font-normal">/month</span></div>
                         <ul class="space-y-3 mb-8">
                             <li class="flex items-center">
                                 <i class="fas fa-check text-green-500 mr-2"></i>
-                                <span class="text-gray-700">Educake</span>
-                            </li>
-
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-500 mr-2"></i>
-                                <span class="text-gray-700">SparxMaths</span>
+                                <span class="text-gray-700">Automatic Educake completion</span>
                             </li>
                             <li class="flex items-center">
                                 <i class="fas fa-check text-green-500 mr-2"></i>
-                                <span class="text-gray-700">LanguageGym</span>
+                                <span class="text-gray-700">Automatic SparxMaths completion</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                <span class="text-gray-700">Automatic LanguageGym completion</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                <span class="text-gray-700">24/7 Priority Support</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                <span class="text-gray-700">Custom assignment scheduling</span>
                             </li>
                         </ul>
+                        <a href="/signup" class="block text-center bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-lg w-full transition-colors">Subscribe Now</a>
                     </div>
-                    <div class="px-8 pb-8">
-                        <a href="/dashboard/new-order" class="block w-full bg-indigo-600 hover:bg-indigo-700 text-white text-center py-3 px-4 rounded-lg font-semibold transition-colors duration-200">
-                            Get Started
-                        </a>
+                </div>
+            </div>
+
+            <!-- How It Works Section -->
+            <div class="bg-white rounded-xl shadow-md p-8 mb-10">
+                <h2 class="text-2xl font-bold text-center text-gray-800 mb-8">How Our Automatic Homework Service Works</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="text-center">
+                        <div class="bg-indigo-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-user-plus text-2xl text-indigo-600"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">1. Subscribe & Connect</h3>
+                        <p class="text-gray-600">Choose a plan and connect your homework platforms with your login credentials.</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="bg-indigo-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-robot text-2xl text-indigo-600"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">2. We Monitor & Complete</h3>
+                        <p class="text-gray-600">Our system automatically detects new assignments and completes them for you.</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="bg-indigo-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-check-circle text-2xl text-indigo-600"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">3. Get Perfect Scores</h3>
+                        <p class="text-gray-600">Receive high marks without lifting a finger. We ensure accuracy on every submission.</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Highlight features on hover
+            const features = document.querySelectorAll('.space-y-3 li');
+            features.forEach(feature => {
+                feature.classList.add('pricing-feature', 'p-2', 'rounded');
+            });
+            
+            // Add subtle animation to pricing cards
+            setTimeout(() => {
+                document.querySelectorAll('.pricing-card').forEach((card, index) => {
+                    setTimeout(() => {
+                        card.classList.add('animate-pulse');
+                        setTimeout(() => {
+                            card.classList.remove('animate-pulse');
+                        }, 500);
+                    }, index * 200);
+                });
+            }, 1000);
+        });
+    </script>
 {{/inline}}
-{{~> layouts/base title="Affordable Homework Completion Plans"~}}
+{{~> layouts/base title="Automatic Homework Completion Subscriptions"~}}
