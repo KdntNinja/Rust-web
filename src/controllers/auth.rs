@@ -46,7 +46,7 @@ pub async fn process_login(
     match result {
         Ok(user) => {
             // Set session cookie
-            let cookie = Cookie::build("user_id", user.id.to_string())
+            let cookie = Cookie::build("user_id")
                 .path("/")
                 .build();
             cookies.add_private(cookie);
@@ -67,7 +67,7 @@ pub async fn process_login(
 
 #[get("/logout")]
 pub fn logout(cookies: &CookieJar<'_>) -> Redirect {
-    cookies.remove_private(Cookie::named("user_id"));
+    cookies.remove_private(Cookie::from("user_id"));
     Redirect::to("/")
 }
 
@@ -100,7 +100,7 @@ pub async fn process_signup(
     match result {
         Ok(user) => {
             // Set session cookie
-            let cookie = Cookie::build("user_id", user.id.to_string())
+            let cookie = Cookie::build("user_id")
                 .path("/")
                 .build();
             cookies.add_private(cookie);
